@@ -10,6 +10,33 @@ namespace OdeToFood_AspCore.Services
         Restaurant Get(int id);
         Restaurant Add(Restaurant restaurant);
     }
+
+    public class SqlRestaurantData : IRestaurantData
+    {
+        private OdeToFoodDbContext _context;
+
+        public SqlRestaurantData(OdeToFoodDbContext context)
+        {
+            _context = context;
+        }
+        public IEnumerable<Restaurant> GetAll()
+        {
+            return _context.Restaurants;
+        }
+
+        public Restaurant Get(int id)
+        {
+            return _context.Restaurants.FirstOrDefault(r => r.Id == id);
+        }
+
+        public Restaurant Add(Restaurant restaurant)
+        {
+            _context.Add(restaurant);
+            _context.SaveChanges();
+
+            return restaurant;
+        }
+    }
     public class InMemoryRestaurantData : IRestaurantData
     {
         static InMemoryRestaurantData()

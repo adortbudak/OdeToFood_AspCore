@@ -1,4 +1,6 @@
-﻿namespace OdeToFood_AspCore.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OdeToFood_AspCore.Entities
 {
     public enum CuisineType
     {
@@ -12,6 +14,7 @@
     {
         public int Id { get; set; }
 
+        [Display(Name = "Restaurant Name")]
         public string Name { get; set; }
 
         public CuisineType Cuisine { get; set; }
