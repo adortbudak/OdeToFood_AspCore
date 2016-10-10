@@ -9,6 +9,7 @@ namespace OdeToFood_AspCore.Services
         IEnumerable<Restaurant> GetAll();
         Restaurant Get(int id);
         Restaurant Add(Restaurant restaurant);
+        void Commit();
     }
 
     public class SqlRestaurantData : IRestaurantData
@@ -35,6 +36,11 @@ namespace OdeToFood_AspCore.Services
             _context.SaveChanges();
 
             return restaurant;
+        }
+
+        public void Commit()
+        {
+            _context.SaveChanges();
         }
     }
     public class InMemoryRestaurantData : IRestaurantData
@@ -67,6 +73,11 @@ namespace OdeToFood_AspCore.Services
 
             return restaurant;
 
+        }
+
+        public void Commit()
+        {
+            // ..... no op
         }
     }
 }

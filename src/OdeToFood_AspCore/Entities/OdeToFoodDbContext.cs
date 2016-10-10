@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace OdeToFood_AspCore.Entities
 {
-    public class OdeToFoodDbContext : DbContext
+    public class OdeToFoodDbContext : IdentityDbContext<User>
     {
         public DbSet<Restaurant> Restaurants { get; set; }
 

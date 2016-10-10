@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OdeToFood_AspCore.Entities;
 using OdeToFood_AspCore.Services;
 using OdeToFood_AspCore.ViewModels;
 
 namespace OdeToFood_AspCore.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IRestaurantData _restaurantData;
@@ -15,6 +17,9 @@ namespace OdeToFood_AspCore.Controllers
             _restaurantData = restaurantData;
             _greeter = greeter;
         }
+
+        
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var model = new HomePageViewModel();
@@ -36,12 +41,44 @@ namespace OdeToFood_AspCore.Controllers
         }
 
         [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var model = _restaurantData.Get(id);
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, RestaurantEditViewModel model)
+        {
+            var restaurant = _restaurantData.Get(id);
+
+            if (ModelState.IsValid)
+            {
+                restaurant.Cuisine = model.Cuisine;
+                restaurant.Name = model.Name;
+
+                _restaurantData.Commit();
+
+                return RedirectToAction("Details", new {id = restaurant.Id});
+            }
+
+            return View(restaurant);
+        }
+
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(RestaurantEditViewModel model)
         {
             var newRestaurant = new Restaurant();
@@ -49,8 +86,7 @@ namespace OdeToFood_AspCore.Controllers
             newRestaurant.Cuisine = model.Cuisine;
 
             newRestaurant = _restaurantData.Add(newRestaurant);
-
-
+            _restaurantData.Commit();
 
             return RedirectToAction("Details", new {id = newRestaurant.Id});
         }

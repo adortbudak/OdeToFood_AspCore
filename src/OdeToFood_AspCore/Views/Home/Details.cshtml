@@ -1,5 +1,9 @@
 ﻿@using OdeToFood_AspCore.Controllers
-@model OdeToFood_AspCore.Entities.Restaurant
+@model Restaurant
+
+@{
+    ViewBag.Title = Model.Name;
+}
 
 <h1>@Model.Name</h1>
 

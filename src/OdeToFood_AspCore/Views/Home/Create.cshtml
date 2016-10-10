@@ -1,26 +1,27 @@
-﻿@using OdeToFood_AspCore.Entities
-@model Restaurant
+﻿@model Restaurant
+
+@{
+    ViewBag.Title = "Create";
+}
 <div>
-    
+
     <h1>Create</h1>
-    
+
     <div>
-        
         @using (Html.BeginForm())
         {
             <div>
                 @Html.LabelFor(m => m.Name)
-                @Html.TextBoxFor(m => m.Name)
+                @Html.EditorFor(m => m.Name)
             </div>
             <div>
                 @Html.LabelFor(m => m.Cuisine)
-                @Html.DropDownListFor(m=>m.Cuisine,Html.GetEnumSelectList(typeof(CuisineType)))
+                @Html.DropDownListFor(m => m.Cuisine, Html.GetEnumSelectList(typeof(CuisineType)))
             </div>
             <div>
-                <input type="submit" value="Save!"/>
+                <input type="submit" value="Save!" />
             </div>
         }
-
     </div>
 
 </div>
