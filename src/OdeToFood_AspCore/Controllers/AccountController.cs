@@ -19,6 +19,7 @@ namespace OdeToFood_AspCore.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -41,12 +42,9 @@ namespace OdeToFood_AspCore.Controllers
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
-                else
+                foreach (var error in createResult.Errors)
                 {
-                    foreach (var error in createResult.Errors)
-                    {
-                        ModelState.AddModelError("",error.Description);
-                    }
+                    ModelState.AddModelError("",error.Description);
                 }
             }
 
